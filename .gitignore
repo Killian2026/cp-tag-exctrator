@@ -1,0 +1,51 @@
+# === 密钥 & 配置 ===
+.env
+deepseek.txt
+
+# === 模型权重 ===
+
+
+# === 题目 ===
+scrape_usaco.py
+
+# === 训练 ===
+generate_training_data.py
+training_data_*.json
+training_history.json
+augment.py
+train.py
+
+# === 评测 ===
+gen_C.py
+test.py
+testin/
+testout/
+
+# === 数据库 ===
+problems.json
+
+# === Python 缓存 ===
+__pycache__/
+*.pyc
+*.pyo
+
+# === 草稿 & 临时文件 ===
+test.txt
+mathtool.py
+Tag.out
+_review.txt
+_*.json
+*.log
+
+# === IDE ===
+.claude/
+.vscode/
+.idea/
+*.swp
+*.swo
+
+# === 题 ===
+problems/
+
+# === 报告 ===
+info/
