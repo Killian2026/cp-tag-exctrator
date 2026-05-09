@@ -1,9 +1,5 @@
 import os
-import ollama
-from dotenv import load_dotenv
 from TagDict import DICT
-
-load_dotenv()
 
 TAGS=""
 
@@ -35,6 +31,8 @@ def get_system_prompt() -> str:
 
 system_prompt = get_system_prompt()
 
+import ollama
+# 重要！！！这里需要改成你的模型
 def call_AI(content: str)->str:
     client = ollama.Client(host='http://192.168.3.181:11434')
 
