@@ -15,6 +15,11 @@ from model import TagEmbedding
 from dataset import tags_to_multihot, NUM_TAGS
 from math import sqrt
 
+# 中位数
+def med(arr):
+    m = len(arr)
+    arr.sort()
+    return arr[m // 2] if m % 2 else (arr[m // 2 - 1] + arr[m // 2]) / 2
 
 # ═══════════════════════════════════════════════════════════════
 # 模型加载
@@ -141,12 +146,22 @@ if __name__ == "__main__":
     # 4. 检索排名
     array = get_ranked_list(tags)
 
-    Mean=sum(x[1] for x in array)/len(array)
-    StDev=sqrt(sum((x[1]-Mean)**2 for x in array)/(len(array)-1))
+    n=len(array)
+    s=[x[1] for x in array]
+
+
+    Mean=sum(s)/n
+    StDev=sqrt(sum((x-Mean)**2 for x in s)/(n-1))
+    Median=med(s)
+    Q1 = med(s[:(n+1)//2])
+    Q3 = med(s[n//2:])
+    IQR = Q3 - Q1
+    MAD = med([abs(x-Median) for x in s])
 
     # 5. 打印结果
     print(f"Mean={Mean}")
     print(f"Standard Deviation={StDev}")
+    print(f"Five Number: {min(s):.4f} {Q1:.4f} {Median:.4f} {Q3:.4f} {max(s):.4f}")
     print(f"\n{'='*35} Ranking {'='*35}")
 
     max_name_len = max((len(item[0]) for item in array), default=20)
@@ -155,9 +170,9 @@ if __name__ == "__main__":
     for i in range(min(len(array), 200)):
         name = array[i][0]
         sim = array[i][1]
-        z_score=(sim-Mean)/StDev
+        z_score=0.6745*(sim-Median)/MAD # robust z-score
 
-        marker = "★" if z_score>2 else " "
+        marker = "★" if sim-Median>1.5*IQR else " " 
 
         tags_str = ' '.join(sorted(array[i][2]))
         if len(tags_str) > 60:
