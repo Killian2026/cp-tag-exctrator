@@ -156,7 +156,6 @@ if __name__ == "__main__":
     Q1 = med(s[:(n+1)//2])
     Q3 = med(s[n//2:])
     IQR = Q3 - Q1
-    MAD = med([abs(x-Median) for x in s])
 
     # 5. 打印结果
     print(f"Mean={Mean}")
@@ -170,14 +169,12 @@ if __name__ == "__main__":
     for i in range(min(len(array), 200)):
         name = array[i][0]
         sim = array[i][1]
-        z_score=0.6745*(sim-Median)/MAD # robust z-score
+        score=(sim-Median)/IQR # 不是很常规的打分
 
-        marker = "★" if sim-Median>1.5*IQR else " " 
+        marker = "★" if score>1.5 else " " 
 
         tags_str = ' '.join(sorted(array[i][2]))
         if len(tags_str) > 60:
             tags_str = tags_str[:60] + "..."
 
-        print(f"{i+1:<4} {marker} {name:<{name_width}} {sim:>8.3f} {z_score:>8.3f}  {tags_str}")
-
-    print(list(x[1] for x in array))
+        print(f"{i+1:<4} {marker} {name:<{name_width}} {sim:>8.3f} {score:>8.3f}  {tags_str}")
